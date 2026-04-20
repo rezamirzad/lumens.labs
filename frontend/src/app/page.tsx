@@ -4,9 +4,9 @@ import React, { useState, useEffect } from "react";
 import { translations, Language } from "./translations";
 import Navbar from "@/components/Navbar";
 
-export default function Home({ lang = "en" }: { lang: Language }) {
-  const [activeLang, setActiveLang] = useState<Language>(lang);
-  const [sysData, setSysData] = useState({
+export default function Home() {
+  const [lang, setLang] = useState<Language>("en");
+  const [sys, setSys] = useState({
     throughput: 8.42,
     latency: 14.2,
     integrity: 99.99,
@@ -15,36 +15,36 @@ export default function Home({ lang = "en" }: { lang: Language }) {
     nodes: [45, 88, 12, 55],
   });
 
-  const t = translations[activeLang] || translations.en;
+  const t = translations[lang] || translations.en;
 
   // Discrete 5-second polling cycle
   useEffect(() => {
     const interval = setInterval(() => {
-      setSysData({
+      setSys({
         throughput: parseFloat((8.2 + Math.random() * 0.6).toFixed(2)),
         latency: parseFloat((13.8 + Math.random() * 0.9).toFixed(1)),
         integrity: parseFloat((99.97 + Math.random() * 0.02).toFixed(2)),
         encryption: Math.floor(Math.random() * 20) + 35,
         traffic: Array.from({ length: 42 }, () => Math.random() * 100),
-        nodes: sysData.nodes.map((v) =>
+        nodes: sys.nodes.map((v) =>
           Math.min(100, Math.max(10, v + (Math.random() * 10 - 5))),
         ),
       });
     }, 5000);
     return () => clearInterval(interval);
-  }, [sysData.nodes]);
+  }, [sys.nodes]);
 
   return (
-    <main className="min-h-screen bg-white selection:bg-blue-600 pb-20 font-sans">
-      <Navbar lang={activeLang} setLang={setActiveLang} t={t} />
+    <main className="min-h-screen bg-white selection:bg-blue-600 pb-20 font-sans overflow-x-hidden">
+      <Navbar lang={lang} setLang={setLang} t={t} />
 
       <div className="max-w-[1600px] mx-auto pt-32 px-6 grid grid-cols-1 md:grid-cols-12 gap-4">
         {/* HERO MONITOR */}
         <div className="md:col-span-8 p-12 border border-zinc-100 bg-zinc-50 rounded-2xl relative overflow-hidden">
           <div className="flex items-center gap-3 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
-            <span className="mono-tag">
-              {t.hero.status} // {t.hero.uptime} // LOAD: {t.hero.cpu}
+            <span className="mono-tag text-zinc-400">
+              {t.hero.status} // {t.hero.uptime} // {t.hero.cpu}
             </span>
           </div>
           <h1 className="text-7xl md:text-[9.5rem] font-black tracking-tighter italic leading-[0.8] mb-8">
@@ -60,19 +60,19 @@ export default function Home({ lang = "en" }: { lang: Language }) {
           {[
             {
               label: t.stats[0].label,
-              val: `${sysData.throughput} GB/s`,
+              val: `${sys.throughput} GB/s`,
               sub: t.stats[0].detail,
               trend: t.stats[0].trend,
             },
             {
               label: t.stats[1].label,
-              val: `${sysData.latency}ms`,
+              val: `${sys.latency}ms`,
               sub: t.stats[1].detail,
               trend: t.stats[1].trend,
             },
             {
               label: t.stats[2].label,
-              val: `${sysData.integrity}%`,
+              val: `${sys.integrity}%`,
               sub: t.stats[2].detail,
               trend: t.stats[2].trend,
             },
@@ -94,13 +94,13 @@ export default function Home({ lang = "en" }: { lang: Language }) {
           ))}
         </div>
 
-        {/* PACKET DENSITY HISTOGRAM */}
+        {/* TRAFFIC HISTOGRAM */}
         <div className="md:col-span-4 p-8 border border-zinc-100 bg-white rounded-2xl">
           <h3 className="mono-tag blueprint-divider">
             {t.grid.distributionTitle}
           </h3>
           <div className="flex items-end gap-1 h-32">
-            {sysData.traffic.map((val, i) => (
+            {sys.traffic.map((val, i) => (
               <div
                 key={i}
                 className="w-full bg-zinc-900"
@@ -108,18 +108,18 @@ export default function Home({ lang = "en" }: { lang: Language }) {
               />
             ))}
           </div>
-          <div className="mt-4 flex justify-between text-[8px] font-mono text-zinc-400">
-            <span>BIT_RATE: 1.2 THz</span>
-            <span>FREQ_BAND: ALPHA</span>
+          <div className="mt-4 flex justify-between text-[8px] font-mono text-zinc-400 uppercase">
+            <span>Protocol: TCP/IP</span>
+            <span>Sync: Active</span>
           </div>
         </div>
 
-        {/* ENCRYPTION KEY MANAGEMENT */}
+        {/* SECURITY MONITOR */}
         <div className="md:col-span-4 p-8 border border-zinc-100 bg-white rounded-2xl">
           <h3 className="mono-tag blueprint-divider">{t.grid.securityTitle}</h3>
           <div className="flex items-center justify-between mb-8">
             <div className="text-5xl font-black italic tracking-tighter">
-              0x{sysData.encryption}
+              0x{sys.encryption}
             </div>
             <div className="text-right">
               <div className="text-[9px] font-mono text-zinc-400 uppercase">
@@ -130,13 +130,13 @@ export default function Home({ lang = "en" }: { lang: Language }) {
           </div>
           <div className="w-full h-1 bg-zinc-50 border border-zinc-100 rounded-full overflow-hidden">
             <div
-              className="h-full bg-blue-600"
-              style={{ width: `${sysData.encryption}%` }}
+              className="h-full bg-blue-600 transition-all duration-1000"
+              style={{ width: `${sys.encryption}%` }}
             />
           </div>
         </div>
 
-        {/* REGIONAL TOPOLOGY */}
+        {/* NODE TOPOLOGY */}
         <div className="md:col-span-4 p-8 border border-zinc-100 bg-white rounded-2xl">
           <h3 className="mono-tag blueprint-divider">{t.grid.nodesTitle}</h3>
           <div className="space-y-4">
@@ -155,12 +155,12 @@ export default function Home({ lang = "en" }: { lang: Language }) {
                 </div>
                 <div className="flex items-center gap-4">
                   <span className="text-[10px] font-mono font-bold text-zinc-400">
-                    {sysData.nodes[i].toFixed(0)}%
+                    {sys.nodes[i].toFixed(0)}%
                   </span>
                   <div className="w-12 h-1 bg-zinc-100 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-zinc-900"
-                      style={{ width: `${sysData.nodes[i]}%` }}
+                      style={{ width: `${sys.nodes[i]}%` }}
                     />
                   </div>
                 </div>
@@ -169,7 +169,7 @@ export default function Home({ lang = "en" }: { lang: Language }) {
           </div>
         </div>
 
-        {/* LOG INTERCEPTOR - HIGHER CONTRAST VERSION */}
+        {/* PACKET INTERCEPTOR - HIGH CONTRAST */}
         <div className="md:col-span-12 bg-zinc-950 p-8 rounded-2xl text-white font-mono text-[10px] shadow-2xl">
           <div className="flex justify-between border-b border-zinc-800 pb-4 mb-6">
             <span className="text-zinc-100 uppercase tracking-widest">

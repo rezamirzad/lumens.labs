@@ -2,20 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 9, 9, 11;
-  --background-rgb: 255, 255, 255;
-  --lumen-grid: rgba(0, 0, 0, 0.08);
-}
-
 @layer base {
   body {
     @apply text-zinc-950 antialiased selection:bg-blue-600 selection:text-white;
     background-color: #ffffff;
 
-    /* Scientific 12px Technical Grid */
+    /* Precision 12px Technical Grid */
     background-image: radial-gradient(
-      var(--lumen-grid) 0.5px,
+      rgba(0, 0, 0, 0.08) 0.5px,
       transparent 0.5px
     );
     background-size: 12px 12px;
