@@ -1,24 +1,35 @@
+"use client";
+
 import "./globals.css";
-import type { Metadata } from "next";
+import React, { useState } from "react";
 import { Inter } from "next/font/google";
+import Navbar from "@/components/Navbar";
+import { translations, Language } from "./translations";
 
 const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "Lumen Labs",
-  description: "Open-source telemetry for distributed intelligence models.",
-};
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [lang, setLang] = useState<Language>("en");
+  const t = translations[lang] || translations.en;
+
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        {/* Navbar removed from here to be handled inside page.tsx directly */}
-        {children}
+    <html lang={lang}>
+      <body className={`${inter.className} bg-white`}>
+        {/* Navbar now receives the state setters */}
+        <Navbar lang={lang} setLang={setLang} t={t} />
+        {/* We pass the lang to children using a simple clone pattern or just local state */}
+        {React.Children.map(children, (child) => {
+          if (React.isValidElement(child)) {
+            return React.cloneElement(child as React.ReactElement<any>, {
+              lang,
+            });
+          }
+          return child;
+        })}
       </body>
     </html>
   );

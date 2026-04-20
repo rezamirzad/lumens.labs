@@ -6,23 +6,25 @@
   --foreground-rgb: 9, 9, 11; /* Zinc-950 */
   --background-rgb: 255, 255, 255;
 
-  /* Lumen Syntax Palette */
-  --lumen-blue: #3b82f6;
+  /* Precision Telemetry Palette */
+  --lumen-blue: #2563eb;
   --lumen-emerald: #10b981;
-  --lumen-fuchsia: #d946ef;
-  --lumen-orange: #f59e0b;
+  --lumen-fuchsia: #c026d3;
+  --lumen-orange: #ea580c;
+  --lumen-border: rgba(24, 24, 27, 0.08);
 }
 
 @layer base {
   body {
-    @apply text-zinc-950 antialiased selection:bg-blue-500 selection:text-white;
+    @apply text-zinc-950 antialiased selection:bg-blue-600 selection:text-white font-sans;
     background-color: rgb(var(--background-rgb));
 
-    /* Technical blueprint grid background */
-    background-image:
-      linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
+    /* Scientific Micro-Grid Background */
+    background-image: radial-gradient(
+      rgba(0, 0, 0, 0.08) 0.5px,
+      transparent 0.5px
+    );
+    background-size: 16px 16px;
     background-attachment: fixed;
     min-height: 100vh;
   }
@@ -31,58 +33,68 @@
   h2,
   h3,
   h4 {
-    @apply tracking-tighter text-black;
+    @apply tracking-tighter text-black font-bold;
   }
 }
 
 @layer components {
-  /* Custom thin scrollbar for the terminal/logs component */
-  .terminal-scroll::-webkit-scrollbar {
+  /* High-Density Dashboard Card */
+  .dashboard-card {
+    @apply border border-zinc-100 bg-white rounded-2xl p-6 
+           transition-all duration-300 hover:border-zinc-900 
+           hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)];
+  }
+
+  /* Technical Mono Label */
+  .mono-tag {
+    @apply font-mono text-[8px] font-black uppercase tracking-widest text-zinc-400;
+  }
+
+  /* Professional Telemetry Scrollbar */
+  .custom-scroll::-webkit-scrollbar {
     width: 2px;
   }
 
-  .terminal-scroll::-webkit-scrollbar-track {
+  .custom-scroll::-webkit-scrollbar-track {
     @apply bg-transparent;
   }
 
-  .terminal-scroll::-webkit-scrollbar-thumb {
-    @apply bg-zinc-800 rounded-full hover:bg-zinc-700;
-  }
-
-  /* Bento Card Base - Large Rounded Corners are key to this look */
-  .bento-card {
-    @apply border border-zinc-100 bg-white rounded-[2.5rem] p-8 
-           transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/5 
-           hover:border-zinc-300;
+  .custom-scroll::-webkit-scrollbar-thumb {
+    @apply bg-zinc-800 rounded-full;
   }
 }
 
 @layer utilities {
-  /* Ultra-slow rotation for background decorative elements */
-  .animate-spin-slow {
-    animation: spin 20s linear infinite;
+  /* Rapid flicker for status warnings */
+  .animate-flicker {
+    animation: flicker 1.5s infinite ease-in-out;
   }
 
-  /* Text glow for "Active" status indicators */
-  .text-glow-blue {
-    text-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+  /* Static blueprint divider */
+  .blueprint-divider {
+    @apply border-b border-zinc-50 pb-2 mb-6;
   }
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
+@keyframes flicker {
+  0% {
+    opacity: 1;
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
-/* Hide scrollbars but keep functionality for the ticker if needed */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* Tooltip/Data-overlay style */
+.data-overlay {
+  @apply absolute inset-0 bg-white/10 backdrop-blur-[1px] opacity-0 
+         group-hover:opacity-100 transition-opacity pointer-events-none;
 }
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+/* Infrastructure Marquee (Manual logic for top bar) */
+.marquee-container {
+  @apply flex gap-16 whitespace-nowrap;
 }
