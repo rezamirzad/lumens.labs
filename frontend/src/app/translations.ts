@@ -4,22 +4,57 @@ export interface TranslationContent {
   brand: string;
   ticker: string[];
   nav: { dash: string; telemetry: string; nodes: string; live: string };
-  hero: { title: string; subtitle: string; status: string; uptime: string };
+  hero: {
+    title: string;
+    subtitle: string;
+    status: string;
+    uptime: string;
+    cpu: string;
+  };
   grid: {
     loadTitle: string;
     nodesTitle: string;
     latencyTitle: string;
     opsTitle: string;
+    topologyTitle: string;
+    distributionTitle: string;
+    securityTitle: string;
   };
-  stats: { label: string; value: string; status: string; color: string }[];
-  experiments: { id: string; name: string; progress: number; status: string }[];
-  logs: { timestamp: string; event: string; status: string; origin: string }[];
+  stats: {
+    label: string;
+    value: string;
+    status: string;
+    color: string;
+    trend: string;
+    detail: string;
+  }[];
+  nodes: {
+    id: string;
+    region: string;
+    latency: string;
+    load: number;
+    status: string;
+  }[];
+  logs: {
+    timestamp: string;
+    event: string;
+    status: string;
+    origin: string;
+    hex: string;
+    port: string;
+  }[];
 }
 
 export const translations: Record<Language, TranslationContent> = {
   en: {
     brand: "Lumen // Labs",
-    ticker: ["CORE_STABLE", "NODES_1240", "MEM_OPTIMAL", "NET_SECURE"],
+    ticker: [
+      "CORE: STABLE",
+      "UPTIME: 99.98%",
+      "NODES: 1240",
+      "MEM: OPTIMAL",
+      "UPLINK: SECURE",
+    ],
     nav: {
       dash: "Dashboard",
       telemetry: "Telemetry",
@@ -28,50 +63,76 @@ export const translations: Record<Language, TranslationContent> = {
     },
     hero: {
       title: "Neural Frontier",
-      subtitle: "Open-source telemetry for distributed intelligence.",
+      subtitle:
+        "Autonomous telemetry for distributed synthetic intelligence and neural network mapping.",
       status: "Operational",
       uptime: "99.998%",
+      cpu: "12.4%",
     },
     grid: {
       loadTitle: "Neural_Load_Distribution",
-      nodesTitle: "Active_Cluster_Nodes",
+      nodesTitle: "Regional_Node_Topology",
       latencyTitle: "System_Latency_Matrix",
-      opsTitle: "Global_Operations_Log",
+      opsTitle: "Packet_Stream_Interceptor",
+      topologyTitle: "Neural_Mesh_Mapping",
+      distributionTitle: "Packet_Density_Histogram",
+      securityTitle: "Encryption_Key_Management",
     },
     stats: [
       {
-        label: "Neural Throughput",
-        value: "8.4 GB/s",
+        label: "Throughput",
+        value: "8.42 GB/s",
         status: "peak",
-        color: "text-blue-500",
+        color: "text-blue-600",
+        trend: "+1.2%",
+        detail: "X-Stream 64-bit",
       },
       {
-        label: "Active Nodes",
-        value: "1,240",
+        label: "Latency",
+        value: "14.2ms",
         status: "stable",
-        color: "text-emerald-500",
+        color: "text-emerald-600",
+        trend: "-0.4ms",
+        detail: "Fiber Optic",
       },
       {
-        label: "Packet Integrity",
-        value: "99.9%",
+        label: "Integrity",
+        value: "99.99%",
         status: "verified",
-        color: "text-fuchsia-500",
+        color: "text-fuchsia-600",
+        trend: "0.001%",
+        detail: "SHA-256",
       },
     ],
-    experiments: [
+    nodes: [
       {
-        id: "EXP_01",
-        name: "Synapse Mapping",
-        progress: 84,
-        status: "processing",
+        id: "SIGMA-1",
+        region: "US-EAST",
+        latency: "12ms",
+        load: 45,
+        status: "Active",
       },
       {
-        id: "EXP_02",
-        name: "Quantum Entanglement",
-        progress: 32,
-        status: "delayed",
+        id: "DELTA-4",
+        region: "EU-WEST",
+        latency: "24ms",
+        load: 88,
+        status: "High_Load",
       },
-      { id: "EXP_03", name: "Heuristic Drift", progress: 61, status: "stable" },
+      {
+        id: "OMEGA-9",
+        region: "ASIA-S",
+        latency: "42ms",
+        load: 12,
+        status: "Standby",
+      },
+      {
+        id: "BETA-2",
+        region: "SA-EAST",
+        latency: "31ms",
+        load: 55,
+        status: "Active",
+      },
     ],
     logs: [
       {
@@ -79,24 +140,167 @@ export const translations: Record<Language, TranslationContent> = {
         event: "Node_Alpha_Handshake",
         status: "success",
         origin: "US-EAST",
+        hex: "0x4F2",
+        port: "443",
       },
       {
         timestamp: "12:07:45",
-        event: "Model_Weight_Sync",
+        event: "Weight_Sync_Init",
         status: "info",
         origin: "EU-WEST",
+        hex: "0x1A2",
+        port: "8080",
       },
       {
         timestamp: "12:07:12",
-        event: "Buffer_Overflow_Warning",
+        event: "Buffer_Threshold",
         status: "warning",
-        origin: "ASIA-SOUTH",
+        origin: "ASIA-S",
+        hex: "0x99B",
+        port: "22",
+      },
+      {
+        timestamp: "12:06:55",
+        event: "Inbound_Filter",
+        status: "info",
+        origin: "EU-NORTH",
+        hex: "0xBC3",
+        port: "5000",
+      },
+    ],
+  },
+  de: {
+    brand: "Lumen // Labs",
+    ticker: [
+      "KERN: STABIL",
+      "UPTIME: 99.98%",
+      "KNOTEN: 1240",
+      "MEM: OPTIMAL",
+      "UPLINK: SICHER",
+    ],
+    nav: {
+      dash: "Instrumententafel",
+      telemetry: "Telemetrie",
+      nodes: "Knoten",
+      live: "Live_Stream",
+    },
+    hero: {
+      title: "Neurale Grenze",
+      subtitle:
+        "Autonome Telemetrie für verteilte synthetische Intelligenz und neuronale Kartierung.",
+      status: "Einsatzbereit",
+      uptime: "99.998%",
+      cpu: "12.4%",
+    },
+    grid: {
+      loadTitle: "Neurale_Lastverteilung",
+      nodesTitle: "Regionale_Knotentopologie",
+      latencyTitle: "System_Latenzmatrix",
+      opsTitle: "Paketstrom_Abfangjäger",
+      topologyTitle: "Neurale_Netzkartierung",
+      distributionTitle: "Paketdichte-Histogramm",
+      securityTitle: "Verschlüsselungsverwaltung",
+    },
+    stats: [
+      {
+        label: "Durchsatz",
+        value: "8.42 GB/s",
+        status: "spitze",
+        color: "text-blue-600",
+        trend: "+1.2%",
+        detail: "X-Stream 64-Bit",
+      },
+      {
+        label: "Latenz",
+        value: "14.2ms",
+        status: "stabil",
+        color: "text-emerald-600",
+        trend: "-0.4ms",
+        detail: "Glasfaser",
+      },
+      {
+        label: "Integrität",
+        value: "99.99%",
+        status: "verifiziert",
+        color: "text-fuchsia-600",
+        trend: "0.001%",
+        detail: "SHA-256",
+      },
+    ],
+    nodes: [
+      {
+        id: "SIGMA-1",
+        region: "US-OST",
+        latency: "12ms",
+        load: 45,
+        status: "Aktiv",
+      },
+      {
+        id: "DELTA-4",
+        region: "EU-WEST",
+        latency: "24ms",
+        load: 88,
+        status: "Hoch",
+      },
+      {
+        id: "OMEGA-9",
+        region: "ASIEN-S",
+        latency: "42ms",
+        load: 12,
+        status: "Bereit",
+      },
+      {
+        id: "BETA-2",
+        region: "SA-OST",
+        latency: "31ms",
+        load: 55,
+        status: "Aktiv",
+      },
+    ],
+    logs: [
+      {
+        timestamp: "12:08:01",
+        event: "Knoten_Alpha_Handshake",
+        status: "erfolg",
+        origin: "US-OST",
+        hex: "0x4F2",
+        port: "443",
+      },
+      {
+        timestamp: "12:07:45",
+        event: "Gewichts_Sync",
+        status: "info",
+        origin: "EU-WEST",
+        hex: "0x1A2",
+        port: "8080",
+      },
+      {
+        timestamp: "12:07:12",
+        event: "Puffer_Limit",
+        status: "warnung",
+        origin: "ASIEN-S",
+        hex: "0x99B",
+        port: "22",
+      },
+      {
+        timestamp: "12:06:55",
+        event: "Eingehendes_Paket",
+        status: "info",
+        origin: "EU-NORD",
+        hex: "0xBC3",
+        port: "5000",
       },
     ],
   },
   fr: {
     brand: "Lumen // Labs",
-    ticker: ["CŒUR_STABLE", "NŒUDS_1240", "MÉM_OPTIMAL", "NET_SÉCURISÉ"],
+    ticker: [
+      "CŒUR: STABLE",
+      "UPTIME: 99.98%",
+      "NŒUDS: 1240",
+      "MÉM: OPTIMAL",
+      "LIEN: SÉCURISÉ",
+    ],
     nav: {
       dash: "Tableau",
       telemetry: "Télémétrie",
@@ -105,238 +309,232 @@ export const translations: Record<Language, TranslationContent> = {
     },
     hero: {
       title: "Frontière Neurale",
-      subtitle: "Télémétrie open-source pour l'intelligence distribuée.",
+      subtitle:
+        "Télémétrie autonome pour l'intelligence synthétique distribuée et cartographie.",
       status: "Opérationnel",
       uptime: "99.998%",
+      cpu: "12.4%",
     },
     grid: {
-      loadTitle: "Distrib_Charge_Neurale",
-      nodesTitle: "Nœuds_Cluster_Actifs",
-      latencyTitle: "Matrice_Latence_Système",
-      opsTitle: "Journal_Opérations_Global",
+      loadTitle: "Charge_Neurale",
+      nodesTitle: "Topologie",
+      latencyTitle: "Matrice_Latence",
+      opsTitle: "Intercepteur_Flux_Paquets",
+      topologyTitle: "Maillage_Neural",
+      distributionTitle: "Histogramme_Densité",
+      securityTitle: "Gestion_Chiffrement",
     },
     stats: [
       {
-        label: "Débit Neural",
-        value: "8.4 Go/s",
+        label: "Débit",
+        value: "8.42 Go/s",
         status: "pic",
-        color: "text-blue-500",
+        color: "text-blue-600",
+        trend: "+1.2%",
+        detail: "Flux 64-bit",
       },
       {
-        label: "Nœuds Actifs",
-        value: "1,240",
+        label: "Latence",
+        value: "14.2ms",
         status: "stable",
-        color: "text-emerald-500",
+        color: "text-emerald-600",
+        trend: "-0.4ms",
+        detail: "Fibre Optique",
       },
       {
-        label: "Intégrité Paquets",
-        value: "99.9%",
+        label: "Intégrité",
+        value: "99.99%",
         status: "vérifié",
-        color: "text-fuchsia-500",
+        color: "text-fuchsia-600",
+        trend: "0.001%",
+        detail: "SHA-256",
       },
     ],
-    experiments: [
+    nodes: [
       {
-        id: "EXP_01",
-        name: "Cartographie Synapse",
-        progress: 84,
-        status: "en cours",
+        id: "SIGMA-1",
+        region: "US-EST",
+        latency: "12ms",
+        load: 45,
+        status: "Actif",
       },
       {
-        id: "EXP_02",
-        name: "Intrication Quantique",
-        progress: 32,
-        status: "retardé",
+        id: "DELTA-4",
+        region: "EU-OUEST",
+        latency: "24ms",
+        load: 88,
+        status: "Haute",
       },
       {
-        id: "EXP_03",
-        name: "Dérive Heuristique",
-        progress: 61,
-        status: "stable",
-      },
-    ],
-    logs: [
-      {
-        timestamp: "12:08:01",
-        event: "Nœud_Alpha_Connexion",
-        status: "success",
-        origin: "US-EAST",
+        id: "OMEGA-9",
+        region: "ASIE-S",
+        latency: "42ms",
+        load: 12,
+        status: "Attente",
       },
       {
-        timestamp: "12:07:45",
-        event: "Sync_Poids_Modèle",
-        status: "info",
-        origin: "EU-WEST",
-      },
-      {
-        timestamp: "12:07:12",
-        event: "Alerte_Saturation_Mémoire",
-        status: "warning",
-        origin: "ASIA-SOUTH",
-      },
-    ],
-  },
-  de: {
-    brand: "Lumen // Labs",
-    ticker: ["KERN_STABIL", "KNOTEN_1240", "MEM_OPTIMAL", "NETZ_SICHER"],
-    nav: {
-      dash: "Dashboard",
-      telemetry: "Telemetrie",
-      nodes: "Knoten",
-      live: "Live_Stream",
-    },
-    hero: {
-      title: "Neurale Grenze",
-      subtitle: "Open-Source-Telemetrie für verteilte Intelligenz.",
-      status: "Betriebsbereit",
-      uptime: "99.998%",
-    },
-    grid: {
-      loadTitle: "Neurale_Lastverteilung",
-      nodesTitle: "Aktive_Clusterknoten",
-      latencyTitle: "System_Latenzmatrix",
-      opsTitle: "Globales_Operationsprotokoll",
-    },
-    stats: [
-      {
-        label: "Neuraler Durchsatz",
-        value: "8.4 GB/s",
-        status: "spitze",
-        color: "text-blue-500",
-      },
-      {
-        label: "Aktive Knoten",
-        value: "1,240",
-        status: "stabil",
-        color: "text-emerald-500",
-      },
-      {
-        label: "Paketintegrität",
-        value: "99.9%",
-        status: "verifiziert",
-        color: "text-fuchsia-500",
-      },
-    ],
-    experiments: [
-      {
-        id: "EXP_01",
-        name: "Synapsen-Mapping",
-        progress: 84,
-        status: "verarbeitung",
-      },
-      {
-        id: "EXP_02",
-        name: "Quantenverschränkung",
-        progress: 32,
-        status: "verzögert",
-      },
-      {
-        id: "EXP_03",
-        name: "Heuristische Drift",
-        progress: 61,
-        status: "stabil",
+        id: "BETA-2",
+        region: "SA-EST",
+        latency: "31ms",
+        load: 55,
+        status: "Actif",
       },
     ],
     logs: [
       {
         timestamp: "12:08:01",
-        event: "Knoten_Alpha_Handshake",
-        status: "success",
-        origin: "US-EAST",
+        event: "Nœud_Alpha_Handshake",
+        status: "succès",
+        origin: "US-EST",
+        hex: "0x4F2",
+        port: "443",
       },
       {
         timestamp: "12:07:45",
-        event: "Modellgewichts_Sync",
+        event: "Sync_Poids",
         status: "info",
-        origin: "EU-WEST",
+        origin: "EU-OUEST",
+        hex: "0x1A2",
+        port: "8080",
       },
       {
         timestamp: "12:07:12",
-        event: "Speicher_Warnung",
-        status: "warning",
-        origin: "ASIA-SOUTH",
+        event: "Seuil_Tampon",
+        status: "alerte",
+        origin: "ASIE-S",
+        hex: "0x99B",
+        port: "22",
+      },
+      {
+        timestamp: "12:06:55",
+        event: "Paquet_Filtré",
+        status: "info",
+        origin: "EU-NORD",
+        hex: "0xBC3",
+        port: "5000",
       },
     ],
   },
   es: {
     brand: "Lumen // Labs",
-    ticker: ["NÚCLEO_ESTABLE", "NODOS_1240", "MEM_OPTIMA", "RED_SEGURA"],
+    ticker: [
+      "NÚCLEO: ESTABLE",
+      "UPTIME: 99.98%",
+      "NODOS: 1240",
+      "MEM: ÓPTIMA",
+      "LIEN: SEGURO",
+    ],
     nav: {
       dash: "Panel",
       telemetry: "Telemetría",
       nodes: "Nodos",
-      live: "Transmisión",
+      live: "Vivo",
     },
     hero: {
       title: "Frontera Neural",
-      subtitle: "Telemetría de código abierto para inteligencia distribuida.",
+      subtitle:
+        "Telemetría autónoma para inteligencia sintética distribuida y mapeo neuronal.",
       status: "Operativo",
       uptime: "99.998%",
+      cpu: "12.4%",
     },
     grid: {
-      loadTitle: "Distrib_Carga_Neural",
-      nodesTitle: "Nodos_Cluster_Activos",
-      latencyTitle: "Matriz_Latencia_Sistema",
-      opsTitle: "Registro_Global_Ops",
+      loadTitle: "Carga_Neural",
+      nodesTitle: "Topología",
+      latencyTitle: "Matriz_Latencia",
+      opsTitle: "Interceptor_Paquetes",
+      topologyTitle: "Malla_Neural",
+      distributionTitle: "Histograma_Densidad",
+      securityTitle: "Gestión_Cifrado",
     },
     stats: [
       {
-        label: "Rendimiento Neural",
-        value: "8.4 GB/s",
+        label: "Rendimiento",
+        value: "8.42 GB/s",
         status: "pico",
-        color: "text-blue-500",
+        color: "text-blue-600",
+        trend: "+1.2%",
+        detail: "Stream 64-bit",
       },
       {
-        label: "Nodos Activos",
-        value: "1,240",
+        label: "Latencia",
+        value: "14.2ms",
         status: "estable",
-        color: "text-emerald-500",
+        color: "text-emerald-600",
+        trend: "-0.4ms",
+        detail: "Fibra Óptica",
       },
       {
-        label: "Integridad Paquetes",
-        value: "99.9%",
+        label: "Integridad",
+        value: "99.99%",
         status: "verificado",
-        color: "text-fuchsia-500",
+        color: "text-fuchsia-600",
+        trend: "0.001%",
+        detail: "SHA-256",
       },
     ],
-    experiments: [
+    nodes: [
       {
-        id: "EXP_01",
-        name: "Mapeo de Sinapsis",
-        progress: 84,
-        status: "procesando",
+        id: "SIGMA-1",
+        region: "EE.UU-ESTE",
+        latency: "12ms",
+        load: 45,
+        status: "Activo",
       },
       {
-        id: "EXP_02",
-        name: "Entrelazamiento Cuántico",
-        progress: 32,
-        status: "retrasado",
+        id: "DELTA-4",
+        region: "UE-OESTE",
+        latency: "24ms",
+        load: 88,
+        status: "Alta",
       },
       {
-        id: "EXP_03",
-        name: "Deriva Heurística",
-        progress: 61,
-        status: "estable",
+        id: "OMEGA-9",
+        region: "ASIA-S",
+        latency: "42ms",
+        load: 12,
+        status: "Espera",
+      },
+      {
+        id: "BETA-2",
+        region: "SA-ESTE",
+        latency: "31ms",
+        load: 55,
+        status: "Activo",
       },
     ],
     logs: [
       {
         timestamp: "12:08:01",
-        event: "Handshake_Nodo_Alpha",
-        status: "success",
-        origin: "US-EAST",
+        event: "Handshake_Nodo",
+        status: "éxito",
+        origin: "EE.UU-ESTE",
+        hex: "0x4F2",
+        port: "443",
       },
       {
         timestamp: "12:07:45",
-        event: "Sync_Pesos_Modelo",
+        event: "Sync_Pesos",
         status: "info",
-        origin: "EU-WEST",
+        origin: "UE-OESTE",
+        hex: "0x1A2",
+        port: "8080",
       },
       {
         timestamp: "12:07:12",
-        event: "Aviso_Saturación_Buffer",
-        status: "warning",
-        origin: "ASIA-SOUTH",
+        event: "Límite_Buffer",
+        status: "aviso",
+        origin: "ASIA-S",
+        hex: "0x99B",
+        port: "22",
+      },
+      {
+        timestamp: "12:06:55",
+        event: "Paquete_Filtrado",
+        status: "info",
+        origin: "EU-NORTE",
+        hex: "0xBC3",
+        port: "5000",
       },
     ],
   },

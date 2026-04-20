@@ -3,98 +3,45 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 9, 9, 11; /* Zinc-950 */
+  --foreground-rgb: 9, 9, 11;
   --background-rgb: 255, 255, 255;
-
-  /* Precision Telemetry Palette */
-  --lumen-blue: #2563eb;
-  --lumen-emerald: #10b981;
-  --lumen-fuchsia: #c026d3;
-  --lumen-orange: #ea580c;
-  --lumen-border: rgba(24, 24, 27, 0.08);
+  --lumen-grid: rgba(0, 0, 0, 0.08);
 }
 
 @layer base {
   body {
-    @apply text-zinc-950 antialiased selection:bg-blue-600 selection:text-white font-sans;
-    background-color: rgb(var(--background-rgb));
+    @apply text-zinc-950 antialiased selection:bg-blue-600 selection:text-white;
+    background-color: #ffffff;
 
-    /* Scientific Micro-Grid Background */
+    /* Scientific 12px Technical Grid */
     background-image: radial-gradient(
-      rgba(0, 0, 0, 0.08) 0.5px,
+      var(--lumen-grid) 0.5px,
       transparent 0.5px
     );
-    background-size: 16px 16px;
+    background-size: 12px 12px;
     background-attachment: fixed;
     min-height: 100vh;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4 {
-    @apply tracking-tighter text-black font-bold;
   }
 }
 
 @layer components {
-  /* High-Density Dashboard Card */
   .dashboard-card {
-    @apply border border-zinc-100 bg-white rounded-2xl p-6 
-           transition-all duration-300 hover:border-zinc-900 
-           hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)];
+    @apply border border-zinc-100 bg-white rounded-xl p-8 
+           transition-colors duration-300 hover:border-zinc-400;
   }
 
-  /* Technical Mono Label */
   .mono-tag {
-    @apply font-mono text-[8px] font-black uppercase tracking-widest text-zinc-400;
+    @apply font-mono text-[9px] font-black uppercase tracking-[0.3em] text-zinc-400 block leading-none;
   }
 
-  /* Professional Telemetry Scrollbar */
+  .blueprint-divider {
+    @apply border-b border-zinc-100 pb-3 mb-6 block w-full;
+  }
+
   .custom-scroll::-webkit-scrollbar {
     width: 2px;
   }
-
-  .custom-scroll::-webkit-scrollbar-track {
-    @apply bg-transparent;
-  }
-
   .custom-scroll::-webkit-scrollbar-thumb {
     @apply bg-zinc-800 rounded-full;
   }
-}
-
-@layer utilities {
-  /* Rapid flicker for status warnings */
-  .animate-flicker {
-    animation: flicker 1.5s infinite ease-in-out;
-  }
-
-  /* Static blueprint divider */
-  .blueprint-divider {
-    @apply border-b border-zinc-50 pb-2 mb-6;
-  }
-}
-
-@keyframes flicker {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-/* Tooltip/Data-overlay style */
-.data-overlay {
-  @apply absolute inset-0 bg-white/10 backdrop-blur-[1px] opacity-0 
-         group-hover:opacity-100 transition-opacity pointer-events-none;
-}
-
-/* Infrastructure Marquee (Manual logic for top bar) */
-.marquee-container {
-  @apply flex gap-16 whitespace-nowrap;
 }

@@ -1,100 +1,198 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { translations, Language } from "./translations";
-import { motion } from "framer-motion";
+import Navbar from "@/components/Navbar";
 
 export default function Home({ lang = "en" }: { lang: Language }) {
-  const t = translations[lang] || translations.en;
+  const [activeLang, setActiveLang] = useState<Language>(lang);
+  const [sysData, setSysData] = useState({
+    throughput: 8.42,
+    latency: 14.2,
+    integrity: 99.99,
+    encryption: 42,
+    traffic: Array.from({ length: 42 }, () => Math.random() * 100),
+    nodes: [45, 88, 12, 55],
+  });
+
+  const t = translations[activeLang] || translations.en;
+
+  // Discrete 5-second polling cycle
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSysData({
+        throughput: parseFloat((8.2 + Math.random() * 0.6).toFixed(2)),
+        latency: parseFloat((13.8 + Math.random() * 0.9).toFixed(1)),
+        integrity: parseFloat((99.97 + Math.random() * 0.02).toFixed(2)),
+        encryption: Math.floor(Math.random() * 20) + 35,
+        traffic: Array.from({ length: 42 }, () => Math.random() * 100),
+        nodes: sysData.nodes.map((v) =>
+          Math.min(100, Math.max(10, v + (Math.random() * 10 - 5))),
+        ),
+      });
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [sysData.nodes]);
 
   return (
-    <main className="min-h-screen pt-32 pb-12 px-6 max-w-[1600px] mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-        {/* PRIMARY MONITOR (Left) */}
-        <div className="md:col-span-8 space-y-4">
-          <section className="p-10 border border-zinc-100 bg-zinc-50 rounded-2xl relative overflow-hidden">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-              <span className="mono-tag">
-                {t.hero.status} // {t.hero.uptime}
-              </span>
-            </div>
-            <h1 className="text-8xl font-black italic tracking-tighter leading-none mb-6">
-              {t.hero.title}
-            </h1>
-            <p className="text-xl text-zinc-500 max-w-2xl">{t.hero.subtitle}</p>
-          </section>
+    <main className="min-h-screen bg-white selection:bg-blue-600 pb-20 font-sans">
+      <Navbar lang={activeLang} setLang={setActiveLang} t={t} />
 
-          {/* LATENCY MATRIX (New) */}
-          <section className="grid grid-cols-2 gap-4">
-            <div className="dashboard-card">
-              <h3 className="mono-tag blueprint-divider">
-                Regional_Latency_Matrix
-              </h3>
-              <div className="grid grid-cols-10 gap-1">
-                {Array.from({ length: 50 }).map((_, i) => (
-                  <motion.div
-                    key={i}
-                    animate={{
-                      opacity: [0.1, 1, 0.1],
-                      backgroundColor: i % 7 === 0 ? "#3b82f6" : "#f4f4f5",
-                    }}
-                    transition={{
-                      duration: Math.random() * 3 + 2,
-                      repeat: Infinity,
-                    }}
-                    className="h-4 rounded-[1px]"
-                  />
-                ))}
-              </div>
-            </div>
-            <div className="dashboard-card">
-              <h3 className="mono-tag blueprint-divider">Memory_Heatmap</h3>
-              <div className="flex items-end gap-1 h-20">
-                {Array.from({ length: 30 }).map((_, i) => (
-                  <motion.div
-                    key={i}
-                    animate={{ height: `${Math.random() * 100}%` }}
-                    className="w-full bg-zinc-900"
-                  />
-                ))}
-              </div>
-            </div>
-          </section>
+      <div className="max-w-[1600px] mx-auto pt-32 px-6 grid grid-cols-1 md:grid-cols-12 gap-4">
+        {/* HERO MONITOR */}
+        <div className="md:col-span-8 p-12 border border-zinc-100 bg-zinc-50 rounded-2xl relative overflow-hidden">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+            <span className="mono-tag">
+              {t.hero.status} // {t.hero.uptime} // LOAD: {t.hero.cpu}
+            </span>
+          </div>
+          <h1 className="text-7xl md:text-[9.5rem] font-black tracking-tighter italic leading-[0.8] mb-8">
+            {t.hero.title}
+          </h1>
+          <p className="text-xl text-zinc-500 font-medium max-w-2xl leading-snug">
+            {t.hero.subtitle}
+          </p>
         </div>
 
-        {/* TELEMETRY SIDEBAR (Right) */}
-        <div className="md:col-span-4 space-y-4">
-          <div className="bg-zinc-950 p-8 rounded-2xl text-white font-mono text-[10px]">
-            <div className="flex justify-between border-b border-zinc-800 pb-4 mb-4">
-              <span className="text-zinc-500 uppercase">Live_Node_Stream</span>
-              <span className="text-blue-500 animate-flicker">● STABLE</span>
+        {/* STATS STACK */}
+        <div className="md:col-span-4 grid grid-cols-1 gap-4">
+          {[
+            {
+              label: t.stats[0].label,
+              val: `${sysData.throughput} GB/s`,
+              sub: t.stats[0].detail,
+              trend: t.stats[0].trend,
+            },
+            {
+              label: t.stats[1].label,
+              val: `${sysData.latency}ms`,
+              sub: t.stats[1].detail,
+              trend: t.stats[1].trend,
+            },
+            {
+              label: t.stats[2].label,
+              val: `${sysData.integrity}%`,
+              sub: t.stats[2].detail,
+              trend: t.stats[2].trend,
+            },
+          ].map((stat, i) => (
+            <div key={i} className="dashboard-card">
+              <div className="flex justify-between items-start mb-1">
+                <span className="mono-tag italic">{stat.label}</span>
+                <span className="text-[10px] font-mono text-emerald-600 font-bold">
+                  {stat.trend}
+                </span>
+              </div>
+              <div className="text-5xl font-black italic tracking-tighter">
+                {stat.val}
+              </div>
+              <div className="text-[9px] font-mono text-zinc-400 mt-2 uppercase">
+                {stat.sub}
+              </div>
             </div>
-            <div className="space-y-3 custom-scroll max-h-[400px] overflow-y-auto">
-              {t.logs.map((log, i) => (
-                <div
-                  key={i}
-                  className="border-l border-zinc-800 pl-4 py-1 group"
-                >
-                  <div className="text-zinc-600">
-                    [{log.timestamp}] @{log.origin}
-                  </div>
-                  <div className="text-blue-400 group-hover:text-white transition-colors">
-                    {log.event}
-                  </div>
-                </div>
-              ))}
+          ))}
+        </div>
+
+        {/* PACKET DENSITY HISTOGRAM */}
+        <div className="md:col-span-4 p-8 border border-zinc-100 bg-white rounded-2xl">
+          <h3 className="mono-tag blueprint-divider">
+            {t.grid.distributionTitle}
+          </h3>
+          <div className="flex items-end gap-1 h-32">
+            {sysData.traffic.map((val, i) => (
+              <div
+                key={i}
+                className="w-full bg-zinc-900"
+                style={{ height: `${val}%` }}
+              />
+            ))}
+          </div>
+          <div className="mt-4 flex justify-between text-[8px] font-mono text-zinc-400">
+            <span>BIT_RATE: 1.2 THz</span>
+            <span>FREQ_BAND: ALPHA</span>
+          </div>
+        </div>
+
+        {/* ENCRYPTION KEY MANAGEMENT */}
+        <div className="md:col-span-4 p-8 border border-zinc-100 bg-white rounded-2xl">
+          <h3 className="mono-tag blueprint-divider">{t.grid.securityTitle}</h3>
+          <div className="flex items-center justify-between mb-8">
+            <div className="text-5xl font-black italic tracking-tighter">
+              0x{sysData.encryption}
+            </div>
+            <div className="text-right">
+              <div className="text-[9px] font-mono text-zinc-400 uppercase">
+                Rotation_Freq
+              </div>
+              <div className="text-xs font-bold italic">128_BIT_RSA</div>
             </div>
           </div>
+          <div className="w-full h-1 bg-zinc-50 border border-zinc-100 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-blue-600"
+              style={{ width: `${sysData.encryption}%` }}
+            />
+          </div>
+        </div>
 
-          <div className="dashboard-card bg-blue-600 border-none text-white">
-            <span className="mono-tag text-blue-200">Global_Throughput</span>
-            <div className="text-5xl font-black italic tracking-tighter mt-2">
-              8.42 GB/S
-            </div>
-            <div className="mt-4 pt-4 border-t border-blue-500 text-[10px] opacity-80">
-              UPLINK_ENCRYPTION: AES-256-GCM
-            </div>
+        {/* REGIONAL TOPOLOGY */}
+        <div className="md:col-span-4 p-8 border border-zinc-100 bg-white rounded-2xl">
+          <h3 className="mono-tag blueprint-divider">{t.grid.nodesTitle}</h3>
+          <div className="space-y-4">
+            {t.nodes.map((node, i) => (
+              <div
+                key={i}
+                className="flex justify-between items-center py-2 border-b border-zinc-50 last:border-0"
+              >
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-black uppercase leading-none">
+                    {node.region}
+                  </span>
+                  <span className="text-[8px] font-mono text-zinc-300 mt-1">
+                    {node.id}
+                  </span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="text-[10px] font-mono font-bold text-zinc-400">
+                    {sysData.nodes[i].toFixed(0)}%
+                  </span>
+                  <div className="w-12 h-1 bg-zinc-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-zinc-900"
+                      style={{ width: `${sysData.nodes[i]}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* LOG INTERCEPTOR - HIGHER CONTRAST VERSION */}
+        <div className="md:col-span-12 bg-zinc-950 p-8 rounded-2xl text-white font-mono text-[10px] shadow-2xl">
+          <div className="flex justify-between border-b border-zinc-800 pb-4 mb-6">
+            <span className="text-zinc-100 uppercase tracking-widest">
+              {t.grid.opsTitle}
+            </span>
+            <span className="text-blue-500 font-bold italic tracking-tighter">
+              REC_LIVE // STABLE
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {t.logs.map((log, i) => (
+              <div key={i} className="border-l border-zinc-800 pl-4 py-1">
+                <div className="text-zinc-400">
+                  [{log.timestamp}] // PORT_{log.port}
+                </div>
+                <div className="text-blue-400 font-black my-1.5 uppercase leading-none">
+                  {log.event}
+                </div>
+                <div className="text-zinc-500 italic uppercase tracking-tighter">
+                  {log.origin} // {log.hex}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
