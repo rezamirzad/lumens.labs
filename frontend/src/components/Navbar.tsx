@@ -1,35 +1,52 @@
 import React from "react";
+import { Language, TranslationContent } from "../app/translations";
 
-// 1. Define the "shape" of the props
 interface NavbarProps {
-  brand: string;
+  lang: Language;
+  setLang: (l: Language) => void;
+  t: TranslationContent;
 }
 
-// 2. Use the interface in the component definition
-export default function Navbar({ brand }: NavbarProps) {
+export default function Navbar({ lang, setLang, t }: NavbarProps) {
+  // Safety check: if t is undefined, don't crash the app
+  if (!t) return null;
+
   return (
     <nav className="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-zinc-100 px-6 py-6">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        {/* Technical Logo Style */}
         <div className="text-black font-black tracking-tighter text-xl italic flex items-center gap-1">
           <span className="text-zinc-300 font-mono not-italic">[</span>
-          {brand}
+          {t.brand}
           <span className="text-zinc-300 font-mono not-italic">]</span>
         </div>
 
-        <div className="flex items-center gap-8">
-          <div className="hidden md:flex gap-6 font-mono text-[10px] font-black uppercase tracking-widest text-zinc-400">
-            <span className="text-black cursor-pointer">Dashboard</span>
-            <span className="hover:text-black cursor-pointer transition-colors">
-              Telemetry
-            </span>
-            <span className="hover:text-black cursor-pointer transition-colors">
-              Nodes
-            </span>
+        <div className="flex items-center gap-10">
+          <div className="hidden md:flex gap-8 font-mono text-[10px] font-black uppercase tracking-widest text-zinc-400">
+            {Object.values(t.nav).map((label, i) => (
+              <span
+                key={i}
+                className="hover:text-black cursor-pointer transition-colors"
+              >
+                {label}
+              </span>
+            ))}
           </div>
-          <button className="bg-black text-white px-4 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all">
-            Live_Feed
-          </button>
+
+          <div className="flex gap-3 border-l border-zinc-200 pl-8">
+            {(["en", "fr", "de", "es"] as Language[]).map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className={`text-[10px] font-black uppercase transition-all ${
+                  lang === l
+                    ? "text-blue-600 underline underline-offset-4 decoration-2"
+                    : "text-zinc-400 hover:text-black"
+                }`}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </nav>
